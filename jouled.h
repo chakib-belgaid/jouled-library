@@ -18,6 +18,11 @@
 #include <sys/shm.h>
 #include "perf_util.h"
 
+typedef struct {
+    int group=0;
+    int excl=0;
+    unsigned long   delay_ns=499000 ;
+} options_t;
 
 //  structures  and types definitions
 typedef struct
@@ -32,15 +37,24 @@ typedef struct
 {
     int shmid;
     event_t *shared_data;
+
 } slot_t;
 
+typedef struct
+{
+    int cpu_num;
+    char *events;
+    slot_t * shared_memories ; 
+    int number_of_events;
+
+} cpu_t;
 
 
 //  monitorting functions
 void setup_cpu(int cpu_num, const char *events);
 void clean_cpu(int cpu_num);
 void measure(int cpu_num, int event_code, event_t *event);
-void init(int ncpus,int group,int excl);
+void init(int ncpus,cpu_t *cpus,options_t options);
 void terminate();
 //  memory functions
 slot_t create_shmemroy_slot(key_t shmkey);
