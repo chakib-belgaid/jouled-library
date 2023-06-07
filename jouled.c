@@ -16,7 +16,8 @@ void setup_cpu(int cpu_num, const char *events)
 {   
     perf_event_desc_t *fds;
     int i, ret;
-
+    printf("setting up cpu %d\n", cpu_num);
+    printf("events %s\n", events);
     ret = perf_setup_list_events(events, &all_fds[cpu_num], &num_fds[cpu_num]);
     if (ret || (num_fds == 0))
         errx(1, "cannot setup events\n");
@@ -101,16 +102,16 @@ void measure(int cpu, int event_code, event_t *event)
             warnx("could not read event%d", event_code);
     }
     val = perf_scale(fds[event_code].values);
-    event->cpu_num = cpu;
+    // event->cpu_num = cpu;
     event->value = val;
     event->timestamp = get_time();
-    strcpy(event->event_name, fds[event_code].name);
+    // strcpy(event->event_name, fds[event_code].name);
     fds[event_code].prev_values[0] = fds[event_code].values[0];
     fds[event_code].prev_values[1] = fds[event_code].values[1];
     fds[event_code].prev_values[2] = fds[event_code].values[2];
 }
 
-void init(int ncpus,cpus_t *cpus , options_t options)
+void init(int ncpus,cpu_t *cpus,options_t options)
 {   ncpus = ncpus;  
     options = options;
     for (int i = 0; i < ncpus; i++)

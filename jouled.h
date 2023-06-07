@@ -19,17 +19,17 @@
 #include "perf_util.h"
 
 typedef struct {
-    int group=0;
-    int excl=0;
-    unsigned long   delay_ns=499000 ;
+    int group;
+    int excl;
+    unsigned long   delay_ns;
 } options_t;
 
 //  structures  and types definitions
 typedef struct
 {
-    int cpu_num;
+    // int cpu_num;
     long long timestamp;
-    char event_name[50];
+    // char event_name[50];
     uint64_t value;
 } event_t;
 
