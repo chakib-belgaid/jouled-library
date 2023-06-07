@@ -137,12 +137,17 @@ void init(int ncpus, cpu_t *cpus, options_t options)
 
 void measure_all()
 {
-    for (int event_num = 0; event_num < NEVENTS; event_num++)
+    struct timespec tm = convert_ts(options.delay_ns);
+    for (;;)
     {
-        *all_measures[event_num].shared_data = measure_event(all_events[event_num].cpu_num, event_num);
-    }
+        for (int event_num = 0; event_num < NEVENTS; event_num++)
+        {
+            *all_measures[event_num].shared_data = measure_event(all_events[event_num].cpu_num, event_num);
+        }
 
-    *all_measures[NEVENTS].shared_data = get_time();
+        *all_measures[NEVENTS].shared_data = get_time();
+        nano_sleep(&tm, NULL);
+    }
 }
 
 void terminate()
@@ -181,7 +186,6 @@ void clean_shmemory_slot(slot_t memory_slot)
     if (shmctl(memory_slot.shmid, IPC_RMID, NULL) == -1)
     {
         perror("shmctl");
-
     }
 }
 
@@ -191,7 +195,7 @@ void set_memories()
     perf_event_desc_t *fds;
 
     all_events = calloc(NEVENTS + 1, sizeof(event_t));
-    all_measures = calloc(NEVENTS + 1, sizeof(slot_t * ));
+    all_measures = calloc(NEVENTS + 1, sizeof(slot_t *));
     int event_index = 0;
     for (int i = 0; i < NCPUS; i++)
     {
