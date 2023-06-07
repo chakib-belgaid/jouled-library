@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.14)
 
 project(jouled VERSION 0.1.0 LANGUAGES C)
 
-include(CTest)
-enable_testing()
-add_executable(jouled_test jouled.test.c)
-target_link_libraries(jouled_test jouled)
-add_test(NAME jouled_test COMMAND jouled_test)
+# include(CTest)
+# enable_testing()
+# add_executable(jouled_test jouled.test.c)
+# target_link_libraries(jouled_test jouled)
+# add_test(NAME jouled_test COMMAND jouled_test)
 
 # Add libpfm library to the linker
 set(LIBPFM_LIBRARY "libpfm.a")

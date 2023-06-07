@@ -18,46 +18,55 @@
 #include <sys/shm.h>
 #include "perf_util.h"
 
+
+typedef  uint64_t measure_t; 
+
 typedef struct {
     int group;
     int excl;
     unsigned long   delay_ns;
-} options_t;
+    key_t           base_shmkey;
 
-//  structures  and types definitions
-typedef struct
-{
-    // int cpu_num;
-    long long timestamp;
-    // char event_name[50];
-    uint64_t value;
-} event_t;
+} options_t;
 
 typedef struct
 {
     int shmid;
-    event_t *shared_data;
-
+    measure_t *shared_data;
 } slot_t;
 
-typedef struct
-{
+
+
+typedef struct {
+    int cpu_num;
+    char *event_name;
+    int event_code;
+} event_t;
+
+typedef struct {
     int cpu_num;
     char *events;
-    slot_t * shared_memories ; 
     int number_of_events;
-
 } cpu_t;
 
 
+
+
 //  monitorting functions
-void setup_cpu(int cpu_num, const char *events);
-void clean_cpu(int cpu_num);
-void measure(int cpu_num, int event_code, event_t *event);
+int setup_perf_cpu(int cpu_num, const char *events);
+void clean_perf_cpu(int cpu_num);
+measure_t measure_event(int cpu_num, int event_code);
+void measure_all();
 void init(int ncpus,cpu_t *cpus,options_t options);
 void terminate();
 //  memory functions
 slot_t create_shmemroy_slot(key_t shmkey);
-int clean_shmemory_slot(slot_t memory_slot);
+void clean_shmemory_slot(slot_t memory_slot);
+void set_memories();
+void clean_memories();
+
+//  utility functions
+struct timespec convert_ts(unsigned long delay_ns);
+measure_t get_time();
 
 #endif /* JOULED_H */
