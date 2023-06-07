@@ -5,8 +5,8 @@
 
 void print_event(event_t event)
 {
-   printf( "value: %" PRIu64 " ts:%lld \n", event.value, event.timestamp);
-//    printf("cpu : %d  event : %s value: %" PRIu64 " ts:%lld \n", event.cpu_num, event.event_name, event.value, event.timestamp);
+//    printf( "value: %" PRIu64 " ts:%lld \n", event.value, event.timestamp);
+   printf("cpu : %d  event : %s value: %" PRIu64 " ts:%lld \n", event.cpu_num, event.event_name, event.value, event.timestamp);
 }
 
 void print_events(event_t *events, int number_of_events)
@@ -38,7 +38,7 @@ int main()
     event_t *events = malloc(sizeof(event_t) * 3);
     
     init(1, &cpus, options);
-    setup_cpu(1, cpus.events);
+    // setup_cpu(cpus.cpu_num, cpus.events);
     slot_t eve = create_shmemroy_slot(12234);
     event_t *event = eve.shared_data;
     for (int i = 0; i < 100000000; i++)
