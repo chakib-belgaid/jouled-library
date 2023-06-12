@@ -12,16 +12,8 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get install -y cmake
 
-    - name: Create Build Directory
-      run: mkdir build
-
-    - name: Navigate to Build Directory
-      run: cd build
-
-    - name: Run CMake
-      run: cmake ../
-
-    - name: Build with Make
-      run: make
+    - name: create build 
+      run: cmake -S . -B build
     
-    
+    - name: build
+      run: cmake --build build
